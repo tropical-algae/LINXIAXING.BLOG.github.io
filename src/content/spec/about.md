@@ -1,9 +1,20 @@
 # About
-This is the demo site for [Fuwari](https://github.com/saicaca/fuwari).
+::github{repo="LINXIAXING/BertForClassification"}
 
-::github{repo="saicaca/fuwari"}
 
-> ### Sources of images used in this site
-> - [Unsplash](https://unsplash.com/)
-> - [星と少女](https://www.pixiv.net/artworks/108916539) by [Stella](https://www.pixiv.net/users/93273965)
-> - [Rabbit - v1.4 Showcase](https://civitai.com/posts/586908) by [Rabbit_YourMajesty](https://civitai.com/user/Rabbit_YourMajesty)
+
+爱好旁门左道的电子杂食者，一位年轻有梦想的新晋炼丹师～
+
+目标是成为精通 ▒ ▒ ▒ ▒ 的 ▒ ▒ ▒ ▒ ▒！
+
+~~当然这条路还很远~~ 正在一步步接近！
+
+![dream](dream.png)
+
+---
+
+
+
+该博客用于记录学习过程中遇到的问题和工具使用，以及一些炼丹经历。
+
+此外也会整理部分文档供于日常使用。
