@@ -3,7 +3,7 @@ title: 余弦退火学习率
 published: 2023-10-01
 description: torch库中两种余弦退货学习率的基本用法与应用案例.
 tags: [Pytorch, DeepLearning]
-category: Document
+category: Documents
 draft: false
 ---
 

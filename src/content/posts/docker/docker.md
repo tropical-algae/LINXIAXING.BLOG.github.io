@@ -1,12 +1,62 @@
 ---
-title: Docker command
+title: Docker
 published: 2023-10-01
 image: "./cover.jpg"
 description: Summary of Docker commands.
 tags: [Docker]
-category: Document
+category: Documents
 draft: false
 ---
+
+## Install ##
+
+### 安装 ###
+
+安装之前，先卸载已安装的Docker：
+
+```shell
+sudo apt-get remove docker docker-engine docker.io
+```
+
+使用脚本，通过阿里云镜像安装：
+
+```
+curl -fsSL get.docker.com -o get-docker.sh
+sudo sh get-docker.sh --mirror Aliyun
+```
+
+### 配置&启动 ###
+
+```
+vim /etc/docker/daemon.json
+```
+
+修改/创建`daemon.json`文件，添加以下配置：
+
+```
+{
+  "registry-mirrors": [
+    "https://pee6w651.mirror.aliyuncs.com",
+    "https://docker.mirrors.ustc.edu.cn",
+    "https://registry.docker-cn.com",
+    "http://hub-mirror.c.163.com"
+  ]
+}
+```
+
+重启docker，配置开机自启：
+
+```
+sudo systemctl enable docker
+systemctl daemon-reload 
+systemctl restart docker
+```
+
+
+
+
+
+
 
 ## Basic Command
 
