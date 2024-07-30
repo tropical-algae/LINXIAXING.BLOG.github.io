@@ -8,6 +8,8 @@ category: 'Documents'
 draft: false 
 ---
 
+
+
 教程参考版本为 `0.38.0` ，注意新版本的frp部分字段和规范与旧版本有差异。
 
 ## FRP 部署 ##

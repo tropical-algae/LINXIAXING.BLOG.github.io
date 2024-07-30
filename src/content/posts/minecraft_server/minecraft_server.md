@@ -26,7 +26,7 @@ draft: false
 
 运行 `bash <file_name>.sh` 启动服务器，执行前请先修改配置。
 
-```
+```shell
 # basic config
 server_pkg="/workspace/game/builder/bedrock-server-1.20.71.01.zip" #"https://minecraft.azureedge.net/bin-linux/bedrock-server-1.20.71.01.zip"
 sv_name="YOURCRAFT"
@@ -35,8 +35,8 @@ sv_ipv4_port="11451"
 sv_ipv6_port="11452"
 sv_default_world_file="/workspace/game/builder/world.zip"
 sv_default_world_name="world"
-
 sv_data_root="/data/game/minecraft"
+
 config_file="server.properties"
 builder_env="minecraft_server_builder"
 
@@ -44,9 +44,9 @@ builder_env="minecraft_server_builder"
 echo "Try to clean docker builder environment..."
 rm -rf $builder_env || true
 echo "Try to remove docker contain..."
-docker rm -f minecraft-server 2>/dev/null || true
+docker rm -f minecraft_bedrock_server 2>/dev/null || true
 echo "Try to remove docker image..."
-docker rmi -f minecraft:$sv_version 2>/dev/null || true
+docker rmi -f minecraft_bedrock:$sv_version 2>/dev/null || true
 
 # initialize work environment
 echo "Create work envirment"
@@ -66,12 +66,15 @@ echo "Start unzip $pkg_name"
 unzip $pkg_name
 
 # change config
+if [[ -f "$sv_data_root/$config_file" ]]; then
+		cp -f $sv_data_root/$config_file ./$config_file
+fi
 sed -i -e "s/server-name=.*/server-name=$sv_name/g" ./$config_file
 sed -i -e "s/server-port=.*/server-port=$sv_ipv4_port/g" ./$config_file
 sed -i -e "s/server-portv6=.*/server-portv6=$sv_ipv6_port/g" ./$config_file
 sed -i -e "s/level-name=.*/level-name=$sv_default_world_name/g" ./$config_file
 
-cp ./$config_file $sv_data_root
+cp -f ./$config_file $sv_data_root/$config_file
 
 # unzip default world file, skip steps when the target world already exists
 if [[ -z "$sv_default_world_file" ]]; then
@@ -88,21 +91,20 @@ EOF
 
 tee ./Dockerfile <<- EOF
 FROM ubuntu:22.04
-MAINTAINER Tropical Algae<tropicalalgae@gmail.com>
+LABEL maintainer="Tropical Algae<tropicalalgae@gmail.com>" version="1.0"
 
 WORKDIR /game
-RUN apt-get update
-RUN apt-get install -y libcurl4-openssl-dev
-RUN apt-get install curl
+RUN apt-get update && apt-get install -y libcurl4-openssl-dev screen
 COPY . .
 
 EXPOSE $sv_ipv4_port
 ENTRYPOINT ["sh", "./launch.sh"]
+# ENTRYPOINT ["screen", "-S", "minecraft", "-s", "'./launch.sh'"]
 EOF
 
-docker build -t minecraft:$sv_version .
-docker run -itd -p $sv_ipv4_port:$sv_ipv4_port/udp -p $sv_ipv6_port:$sv_ipv6_port/udp --name minecraft-server --restart=always -v $sv_data_root/worlds:/game/worlds -v $sv_data_root/server.properties:/game/server.properties minecraft:$sv_version
-docker logs -f minecraft-server
+docker build -t minecraft_bedrock:$sv_version .
+docker run -itd -p $sv_ipv4_port:$sv_ipv4_port/udp -p $sv_ipv6_port:$sv_ipv6_port/udp --name minecraft_bedrock_server --restart=always -v $sv_data_root/worlds:/game/worlds -v $sv_data_root/server.properties:/game/server.properties minecraft_bedrock:$sv_version
+docker logs -f minecraft_bedrock_server
 ```
 
 | Variable                | Value                                                     | Describe                                                 |

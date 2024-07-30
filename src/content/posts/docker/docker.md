@@ -10,7 +10,7 @@ draft: false
 
 ## Install ##
 
-### 安装 ###
+### 安装Docker ###
 
 安装之前，先卸载已安装的Docker：
 
@@ -23,24 +23,28 @@ sudo apt-get remove docker docker-engine docker.io
 ```
 curl -fsSL get.docker.com -o get-docker.sh
 sudo sh get-docker.sh --mirror Aliyun
+
+/* -------------------------------------------------------- */
+// 2024.6.17更新 关于国内无法访问Docker的问题，使用如下代理安装
+sudo curl -fsSL https://github.com/tech-shrimp/docker_installer/releases/download/latest/linux.sh| bash -s docker --mirror Aliyun
+
+# 备用
+sudo curl -fsSL https://gitee.com/tech-shrimp/docker_installer/releases/download/latest/linux.sh| bash -s docker --mirror Aliyun
 ```
 
-### 配置&启动 ###
+修改/创建`daemon.json`文件，添加镜像站：
 
 ```
 vim /etc/docker/daemon.json
 ```
 
-修改/创建`daemon.json`文件，添加以下配置：
-
 ```
 {
-  "registry-mirrors": [
-    "https://pee6w651.mirror.aliyuncs.com",
-    "https://docker.mirrors.ustc.edu.cn",
-    "https://registry.docker-cn.com",
-    "http://hub-mirror.c.163.com"
-  ]
+    "registry-mirrors": [
+        "https://docker.m.daocloud.io",
+        "https://docker.1panel.live",
+        "https://hub.rat.dev"
+    ]
 }
 ```
 
@@ -53,6 +57,18 @@ systemctl restart docker
 ```
 
 
+
+### 安装Docker compose
+
+```
+sudo curl -L "https://github.com/docker/compose/releases/download/v2.2.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+sudo chmod +x /usr/local/bin/docker-compose
+
+sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+
+docker-compose version
+```
 
 
 
@@ -96,7 +112,10 @@ docker image prune
 docker build -t <image_name> .
 
 # 查看镜像详细信息
-docker inspect <镜像ID>  
+docker inspect <镜像ID>
+
+# 删除悬虚镜像
+docker image prune
 ```
 
 
@@ -139,6 +158,12 @@ docker rm <容器id>
 
 # 运行容器
 docker exec -ti --user root <container id> /bin/bash
+
+# 查看容器日志
+docker logs -f <container id>
+
+# 进入容器交互
+docker attach <container id>
 ```
 
 
@@ -157,7 +182,7 @@ docker run -itd \
 -v /datasets/dataset:/dataset:ro \
 <image name>:<tag>
 
-# 删除全部镜像  -a 意思为显示全部, -q 意思为只显示ID
+# 删除全部镜像  -a 显示全部, -q 只显示ID
 docker rmi -f $(docker images -aq)
 
 # 启动全部容器
