@@ -185,6 +185,9 @@ docker run -itd \
 # 删除全部镜像  -a 显示全部, -q 只显示ID
 docker rmi -f $(docker images -aq)
 
+# 查看镜像实际版本
+docker image inspect <images>:latest | grep -i version
+
 # 启动全部容器
 docker start $(docker ps -a | awk '{ print $1}' | tail -n +2)  
 
