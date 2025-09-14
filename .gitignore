@@ -3,7 +3,6 @@ dist/
 
 # generated types
 .astro/
-.vscode/
 
 # dependencies
 node_modules/
@@ -22,3 +21,11 @@ pnpm-debug.log*
 .DS_Store
 
 .vercel
+
+package-lock.json
+bun.lockb
+yarn.lock
+
+# ide
+.idea
+*.iml
